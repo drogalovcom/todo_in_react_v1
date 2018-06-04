@@ -7,35 +7,51 @@ export default class TodoItem extends React.Component {
 		this.state = { editing: false }
 	}
 
-    handleEditing (event) {
-	    this.setState({ editing: true })
-    }
+	componentDidMount () {
+		console.log('component is mounted');
+		this.setState({ changedText: this.props.todo.text })
+	}
 
-    handleEditingDone (event) {
-	    console.log("iditing done");
-	    if (event.keyCode ===13) {
-	        this.setState({ editing: false });
-        }
-    }
+	handleEditing (event) {
+		this.setState({ editing: true, changedText: this.props.todo.text })
+	}
+
+	handleEditingDone (event) {
+		console.log("iditing done");
+		if (event.keyCode === 13) {
+			this.setState({ editing: false });
+		}
+	}
+	
+	handleEditingChange (event) {
+		var _changedText = event.target.value;
+		this.setState({ changedText: _changedText });
+	}
 
 	removeTodo(id) {
-        this.props.removeTodo(id);
-    }
+    this.props.removeTodo(id);
+  }
 
 	render() {
-        var viewStyle = {};
-        var editStyle = {};
+		var viewStyle = {};
+		var editStyle = {};
 
-        if (this.state.editing) {
-            viewStyle.display = "none";
-        } else {
-            editStyle.display = "none";
-        }
+		if (this.state.editing) {
+				viewStyle.display = "none";
+		} else {
+				editStyle.display = "none";
+		}
 		return (
 			<div className="todoWrapper">
-				<span style={viewStyle} onDoubleClick={this.handleEditing.bind(this)}>{this.props.todo.text}</span>
-                <input type="text" onKeyDown={this.handleEditing.bind(this)} style={editStyle} value={this.state.changedText} />
-				<button className="removeTodo" onClick={(e)=> this.removeTodo(this.props.id)}>Удалить</button>
+				<div style={viewStyle} onDoubleClick={this.handleEditing.bind(this)}>
+					<span>{this.state.changedText}</span>
+					<button className="removeTodo" onClick={(e)=> this.removeTodo(this.props.id)}>Удалить</button>
+				</div>
+				<input type="text" 
+					onChange={this.handleEditingChange.bind(this)}
+					onKeyDown={this.handleEditingDone.bind(this)}
+					style={editStyle}
+					value={this.state.changedText} />
 			</div>
 		)
 	}
