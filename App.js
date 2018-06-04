@@ -35,10 +35,12 @@ class App extends Component {
 		});
 	}
 
-    updateData = (id, value) => {
-        const todos = this.state.todos.filter((todo, index) => todo.id !== id);
-        this.setState({ inputValue: value, todos });
-    }
+
+	updateData = (id, value) => {
+		const updatetodos = this.state.todos.filter((todo, index) => todo.id !== id);
+		this.setState({ id: id, inputValue: value });
+		var array = [...this.state];
+	}
 
   render() {
     return (
