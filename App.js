@@ -35,6 +35,11 @@ class App extends Component {
 		});
 	}
 
+    updateData = (id, value) => {
+        const todos = this.state.todos.filter((todo, index) => todo.id !== id);
+        this.setState({ inputValue: value, todos });
+    }
+
   render() {
     return (
       <div className="App">
@@ -48,7 +53,7 @@ class App extends Component {
 			<ul>
 				{
 					this.state.todos.map((todo) => {
-						return <TodoItem todo={todo} key={todo.id} id={todo.id} removeTodo={this.removeTodo}/>
+						return <TodoItem todo={todo} updateData={this.updateData} key={todo.id} id={todo.id} removeTodo={this.removeTodo}/>
 					})
 				}
 			</ul>

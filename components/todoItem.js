@@ -2,57 +2,57 @@ import React from 'react';
 
 
 export default class TodoItem extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = { editing: false }
-	}
+    constructor(props) {
+        super(props);
+        this.state = {editing: false}
+    }
 
-	componentDidMount () {
-		console.log('component is mounted');
-		this.setState({ changedText: this.props.todo.text })
-	}
+    componentDidMount() {
+        console.log('component is mounted');
+        this.setState({changedText: this.props.todo.text})
+    }
 
-	handleEditing (event) {
-		this.setState({ editing: true, changedText: this.props.todo.text })
-	}
+    handleEditing(event) {
+        this.setState({editing: true, changedText: this.props.todo.text})
+    }
 
-	handleEditingDone (event) {
-		console.log("iditing done");
-		if (event.keyCode === 13) {
-			this.setState({ editing: false });
-		}
-	}
-	
-	handleEditingChange (event) {
-		var _changedText = event.target.value;
-		this.setState({ changedText: _changedText });
-	}
+    handleEditingDone(event) {
+        if (event.keyCode === 13) {
+            this.setState({editing: false});
+        }
+    }
 
-	removeTodo(id) {
-    this.props.removeTodo(id);
-  }
+    handleEditingChange(event) {
+        this.props.updateData(this.props.id, event.target.value);
+    }
 
-	render() {
-		var viewStyle = {};
-		var editStyle = {};
+    removeTodo(id) {
+        this.props.removeTodo(id);
+    }
 
-		if (this.state.editing) {
-				viewStyle.display = "none";
-		} else {
-				editStyle.display = "none";
-		}
-		return (
-			<div className="todoWrapper">
-				<div style={viewStyle} onDoubleClick={this.handleEditing.bind(this)}>
-					<span>{this.state.changedText}</span>
-					<button className="removeTodo" onClick={(e)=> this.removeTodo(this.props.id)}>Удалить</button>
-				</div>
-				<input type="text" 
-					onChange={this.handleEditingChange.bind(this)}
-					onKeyDown={this.handleEditingDone.bind(this)}
-					style={editStyle}
-					value={this.state.changedText} />
-			</div>
-		)
-	}
+    RenderInput = () => {
+        if (this.state.editing) {
+            return (
+                <input type="text"
+                       onChange={this.handleEditingChange.bind(this)}
+                       onKeyDown={this.handleEditingDone.bind(this)}
+                       value={this.state.changedText}/>
+            )
+        } else {
+            return (
+                <div onDoubleClick={this.handleEditing.bind(this)}>
+                    <span>{this.state.changedText}</span>
+                    <button className="removeTodo" onClick={(e) => this.removeTodo(this.props.id)}>Удалить</button>
+                </div>
+            )
+        }
+    }
+
+    render() {
+        return (
+            <div className="todoWrapper">
+                <this.RenderInput/>
+            </div>
+        )
+    }
 }
