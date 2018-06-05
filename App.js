@@ -37,10 +37,15 @@ class App extends Component {
 
 
 	updateData = (id, value) => {
-		const updatetodos = this.state.todos.filter((todo, index) => todo.id !== id);
-		this.setState({ id: id, inputValue: value });
-		var array = [...this.state];
+		const newTodo = this.state.todos.reduce((result, todo) => {
+			if (todo.id === id){
+                return [...result, {id: id, value: value}];
+			}
+            return [...result, todo];
+		}, []);
+		this.setState({todos: newTodo});
 	}
+
 
   render() {
     return (
