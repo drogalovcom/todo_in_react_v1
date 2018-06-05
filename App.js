@@ -39,11 +39,12 @@ class App extends Component {
 	updateData = (id, value) => {
 		const newTodo = this.state.todos.reduce((result, todo) => {
 			if (todo.id === id){
-                return [...result, {id: id, value: value}];
+                return [...result, {id: id, text: value}];
 			}
             return [...result, todo];
 		}, []);
 		this.setState({todos: newTodo});
+
 	}
 
 

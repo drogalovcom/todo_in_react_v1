@@ -4,7 +4,7 @@ import React from 'react';
 export default class TodoItem extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {editing: false}
+        this.state = {editing: false};
     }
 
     componentDidMount() {
@@ -36,12 +36,13 @@ export default class TodoItem extends React.Component {
                 <input type="text"
                        onChange={this.handleEditingChange.bind(this)}
                        onKeyDown={this.handleEditingDone.bind(this)}
-                       value={this.state.changedText}/>
+                       value={this.props.todo.text}/>
             )
         } else {
             return (
                 <div onDoubleClick={this.handleEditing.bind(this)}>
-                    <span>{this.state.changedText}</span>
+                    <span>{this.props.todo.text}</span>
+                    <button className="removeTodo" onClick={(e) => this.removeTodo(this.props.id)}>Выполнено</button>
                     <button className="removeTodo" onClick={(e) => this.removeTodo(this.props.id)}>Удалить</button>
                 </div>
             )
