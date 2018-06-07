@@ -12,13 +12,6 @@ export default class TodoInput extends React.Component {
 		this.setState({value: e.target.value});
 	}
 
-    handleAddDone(event) {
-        if (event.keyCode === 13) => {
-            this.addTodo(this.state.value)
-		}
-
-	}
-
 	addTodo(todo) {
 		if (todo.length > 0) {
 			this.props.addTodo(todo);
@@ -32,7 +25,6 @@ export default class TodoInput extends React.Component {
 				<input type="text" placeholder="Добавить задачу"
 					   value={this.state.value}
 					   onChange={this.handleChange}
-                       onKeyDown={this.handleAddDone.bind(this)}
 				/>
 				<button className="btn btn-primary" onClick={() => this.addTodo(this.state.value)}>Добавить</button>
 			</div>

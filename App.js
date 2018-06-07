@@ -12,8 +12,8 @@ class App extends Component {
 
 		this.state = {
 			todos: [
-				{id: 0, text: "Это моя первая задача!"},
-				{id: 1, text: "Это моя вторая задача!"},
+				{id: 0, text: "Это моя первая задача!", done: false },
+				{id: 1, text: "Это моя вторая задача!", done: true },
 				{id: 2, text: "Это моя третья задача!"}
 			],
 			nextId: 3
@@ -39,12 +39,19 @@ class App extends Component {
 	updateData = (id, value) => {
 		const newTodo = this.state.todos.reduce((result, todo) => {
 			if (todo.id === id){
-                return [...result, {id: id, text: value}];
+        return [...result, {id: id, text: value}];
 			}
-            return [...result, todo];
+        return [...result, todo];
 		}, []);
 		this.setState({todos: newTodo});
 
+	}
+
+	handleClick = (id) => {
+		console.log('buttonClicked', id);
+		const todos = this.state.todos;
+		todos[id].done = !todos[id].done;
+		this.setState({ todos });
 	}
 
 
@@ -61,7 +68,7 @@ class App extends Component {
 			<ul>
 				{
 					this.state.todos.map((todo) => {
-						return <TodoItem todo={todo} updateData={this.updateData} key={todo.id} id={todo.id} removeTodo={this.removeTodo}/>
+						return <TodoItem todo={todo} updateData={this.updateData} key={todo.id} id={todo.id} removeTodo={this.removeTodo} handleClick={this.handleClick}/>
 					})
 				}
 			</ul>
