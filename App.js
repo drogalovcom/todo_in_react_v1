@@ -14,11 +14,20 @@ class App extends Component {
 			todos: [
 				{id: 0, text: "Это моя первая задача!", done: false },
 				{id: 1, text: "Это моя вторая задача!", done: true },
-				{id: 2, text: "Это моя третья задача!"}
+				{id: 2, text: "Это моя третья задача!", done: false}
 			],
 			nextId: 3
 		};
 	}
+
+    addTodoUn = (todoText) => {
+        let todos = this.state.todos.slice();
+        todos.unshift({id: this.state.nextId, text: todoText});
+        this.setState({
+            todos: todos,
+            nextId: ++this.state.nextId
+        });
+    }
 
 	addTodo = (todoText) => {
 		let todos = this.state.todos.slice();
@@ -31,10 +40,9 @@ class App extends Component {
 
 	removeTodo = (id) => {
 		this.setState({
-			todos: this.state.todos.filter((todo, index) => todo.id !== id)
+			todos: this.state.todos.filter((todo) => todo.id !== id)
 		});
 	}
-
 
 	updateData = (id, value) => {
 		const newTodo = this.state.todos.reduce((result, todo) => {
@@ -47,13 +55,12 @@ class App extends Component {
 
 	}
 
-	handleClick = (id) => {
-		console.log('buttonClicked', id);
-		const todos = this.state.todos;
-		todos[id].done = !todos[id].done;
-		this.setState({ todos });
-	}
-
+    handleClick = (id) => {
+        console.log('buttonClicked', id);
+        const completed = this.state.todos;
+        completed[id].done = !completed[id].done;
+        this.setState({ completed });
+    }
 
   render() {
     return (
@@ -64,16 +71,14 @@ class App extends Component {
         </header>
 		<div className="todo-wrapper">
 			<Header />
-			<TodoInput todoText="" addTodo={this.addTodo} />
+			<TodoInput todoText="" addTodoUn={this.addTodoUn} addTodo={this.addTodo} />
 			<ul>
 				{
 					this.state.todos.map((todo) => {
-						return <TodoItem todo={todo} updateData={this.updateData} key={todo.id} id={todo.id} removeTodo={this.removeTodo} handleClick={this.handleClick}/>
+						return <TodoItem todo={todo} updateData={this.updateData} id={todo.id} key={todo.id} removeTodo={this.removeTodo} handleClick={this.handleClick}/>
 					})
 				}
 			</ul>
-			<Test>
-			</Test>
 		</div>
       </div>
     );

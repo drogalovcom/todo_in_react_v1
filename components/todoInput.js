@@ -5,12 +5,20 @@ export default class TodoInput extends React.Component {
 		super(props)
 		this.state = {value: ""};
 		this.handleChange = this.handleChange.bind(this);
+        this.addTodoUn = this.addTodoUn.bind(this);
 		this.addTodo = this.addTodo.bind(this);
 	}
 
 	handleChange(e) {
 		this.setState({value: e.target.value});
 	}
+
+    addTodoUn(todo) {
+        if (todo.length > 0) {
+            this.props.addTodoUn(todo);
+            this.setState({value: ''});
+        }
+    }
 
 	addTodo(todo) {
 		if (todo.length > 0) {
@@ -26,7 +34,8 @@ export default class TodoInput extends React.Component {
 					   value={this.state.value}
 					   onChange={this.handleChange}
 				/>
-				<button className="btn btn-primary" onClick={() => this.addTodo(this.state.value)}>Добавить</button>
+                <button className="btn btn-primary" onClick={() => this.addTodoUn(this.state.value)}>Добавить в начало</button>
+				<button className="btn btn-primary" onClick={() => this.addTodo(this.state.value)}>Добавить в конец</button>
 			</div>
 		);
 	}
