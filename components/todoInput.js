@@ -7,11 +7,19 @@ export default class TodoInput extends React.Component {
 		this.handleChange = this.handleChange.bind(this);
         this.addTodoUn = this.addTodoUn.bind(this);
 		this.addTodo = this.addTodo.bind(this);
+        this.addTodoCenter = this.addTodoCenter.bind(this);
 	}
 
 	handleChange(e) {
 		this.setState({value: e.target.value});
 	}
+
+    addTodoCenter(todo) {
+        if (todo.length > 0) {
+            this.props.addTodoCenter(todo);
+            this.setState({value: ''});
+        }
+    }
 
     addTodoUn(todo) {
         if (todo.length > 0) {
@@ -34,8 +42,9 @@ export default class TodoInput extends React.Component {
 					   value={this.state.value}
 					   onChange={this.handleChange}
 				/>
-                <button className="btn btn-primary" onClick={() => this.addTodoUn(this.state.value)}>Добавить в начало</button>
-				<button className="btn btn-primary" onClick={() => this.addTodo(this.state.value)}>Добавить в конец</button>
+                <button className="btn btn-primary" onClick={() => this.addTodoUn(this.state.value)}>Начало</button>
+                <button className="btn btn-primary" onClick={() => this.addTodoCenter(this.state.value)}>Середина</button>
+				<button className="btn btn-primary" onClick={() => this.addTodo(this.state.value)}>Конец</button>
 			</div>
 		);
 	}

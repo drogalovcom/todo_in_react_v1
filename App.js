@@ -4,7 +4,7 @@ import './App.css';
 import Header from './components/header'
 import TodoInput from './components/todoInput'
 import TodoItem from './components/todoItem'
-import Test from './components/test'
+import Filtersection from './components/filtersection'
 
 class App extends Component {
 	constructor(props) {
@@ -23,6 +23,16 @@ class App extends Component {
     addTodoUn = (todoText) => {
         let todos = this.state.todos.slice();
         todos.unshift({id: this.state.nextId, text: todoText});
+        this.setState({
+            todos: todos,
+            nextId: ++this.state.nextId
+        });
+    }
+
+    addTodoCenter = (todoText) => {
+        let todos = this.state.todos.slice();
+        let indexCenter = todos.length / 2; // поиск середины массива
+        todos.splice(indexCenter, 0, {id: this.state.nextId, text: todoText});
         this.setState({
             todos: todos,
             nextId: ++this.state.nextId
@@ -57,9 +67,13 @@ class App extends Component {
 
     handleClick = (id) => {
         console.log('buttonClicked', id);
-        const completed = this.state.todos;
-        completed[id].done = !completed[id].done;
-        this.setState({ completed });
+        const newTodo = this.state.todos.reduce((result, todo) => {
+        	if (todo.id === id) { // проверим айди
+                return [...result, {...todo, done: !todo.done }]; //...возвращаем тудушки, {...все данные туду, значение дон изменяем}
+			}
+			return [...result, todo] // иначе возвращаем прежний результат
+		}, []);
+        this.setState({ todos: newTodo });
     }
 
   render() {
@@ -71,7 +85,8 @@ class App extends Component {
         </header>
 		<div className="todo-wrapper">
 			<Header />
-			<TodoInput todoText="" addTodoUn={this.addTodoUn} addTodo={this.addTodo} />
+			<TodoInput todoText="" addTodoUn={this.addTodoUn} addTodo={this.addTodo} addTodoCenter={this.addTodoCenter} />
+			<Filtersection />
 			<ul>
 				{
 					this.state.todos.map((todo) => {
