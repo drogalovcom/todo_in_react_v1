@@ -1,4 +1,10 @@
 import React from 'react';
+import FormControl from 'react-bootstrap/lib/FormControl';
+import InputGroup from 'react-bootstrap/lib/InputGroup';
+import Col from 'react-bootstrap/lib/Col';
+import Row from 'react-bootstrap/lib/Row';
+import DropdownButton from 'react-bootstrap/lib/DropdownButton';
+import MenuItem from 'react-bootstrap/lib/MenuItem';
 
 export default class TodoInput extends React.Component {
 	constructor(props) {
@@ -37,15 +43,27 @@ export default class TodoInput extends React.Component {
 
 	render() {
 		return (
-			<div>
-				<input type="text" placeholder="Добавить задачу"
-					   value={this.state.value}
-					   onChange={this.handleChange}
-				/>
-                <button className="btn btn-primary" onClick={() => this.addTodoUn(this.state.value)}>Начало</button>
-                <button className="btn btn-primary" onClick={() => this.addTodoCenter(this.state.value)}>Середина</button>
-				<button className="btn btn-primary" onClick={() => this.addTodo(this.state.value)}>Конец</button>
-			</div>
+			<section className="input">
+                <Row>
+                    <Col xs={12} sm={8} smOffset={2}>
+                        <InputGroup className="input_section">
+                            <Col xs={8}>
+                                <FormControl bsSize="small" type="text" placeholder="Введите задачу"
+                                             value={this.state.value}
+                                             onChange={this.handleChange}
+                                />
+                            </Col>
+                            <Col xs={4}>
+                                <DropdownButton bsSize="small" title="Добавить" id="bg-nested-dropdown">
+                                    <MenuItem bsSize="small" onClick={() => this.addTodoUn(this.state.value)}>В начало</MenuItem>
+                                    <MenuItem bsSize="small" onClick={() => this.addTodoCenter(this.state.value)}>В середину</MenuItem>
+                                    <MenuItem bsSize="small" onClick={() => this.addTodo(this.state.value)}>В конец</MenuItem>
+                                </DropdownButton>
+                            </Col>
+                        </InputGroup>
+                    </Col>
+                </Row>
+			</section>
 		);
 	}
 }

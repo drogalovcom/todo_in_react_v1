@@ -1,16 +1,21 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Header from './components/header'
-import TodoInput from './components/todoInput'
-import TodoItem from './components/todoItem'
-import Filtersection from './components/filtersection'
+import TodoInput from './components/todoInput';
+import TodoItem from './components/todoItem';
+import ListGroup from 'react-bootstrap/lib/ListGroup';
+import Grid from 'react-bootstrap/lib/Grid';
+import Col from 'react-bootstrap/lib/Col';
+import Row from 'react-bootstrap/lib/Row';
+import ToggleButtonGroup from 'react-bootstrap/lib/ToggleButtonGroup';
+import ToggleButton from 'react-bootstrap/lib/ToggleButton';
 
 class App extends Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
+			filter: 'all',
 			todos: [
 				{id: 0, text: "Это моя первая задача!", done: false },
 				{id: 1, text: "Это моя вторая задача!", done: true },
@@ -22,7 +27,7 @@ class App extends Component {
 
     addTodoUn = (todoText) => {
         let todos = this.state.todos.slice();
-        todos.unshift({id: this.state.nextId, text: todoText});
+        todos.unshift({id: this.state.nextId, text: todoText, done: false});
         this.setState({
             todos: todos,
             nextId: ++this.state.nextId
@@ -32,7 +37,7 @@ class App extends Component {
     addTodoCenter = (todoText) => {
         let todos = this.state.todos.slice();
         let indexCenter = todos.length / 2; // поиск середины массива
-        todos.splice(indexCenter, 0, {id: this.state.nextId, text: todoText});
+        todos.splice(indexCenter, 0, {id: this.state.nextId, text: todoText, done: false});
         this.setState({
             todos: todos,
             nextId: ++this.state.nextId
@@ -41,7 +46,7 @@ class App extends Component {
 
 	addTodo = (todoText) => {
 		let todos = this.state.todos.slice();
-		todos.push({id: this.state.nextId, text: todoText});
+		todos.push({id: this.state.nextId, text: todoText, done: false});
 		this.setState({
 			todos: todos,
 			nextId: ++this.state.nextId
@@ -76,25 +81,48 @@ class App extends Component {
         this.setState({ todos: newTodo });
     }
 
+    updateFilter = filter => {
+		this.setState({ filter });
+	}
+
+	todosFiltered = () => {
+		if (this.state.filter === 'all') {
+			return this.state.todos;
+		} else if (this.state.filter === 'active') {
+			return this.state.todos.filter(todo => !todo.done);
+		} else if (this.state.filter === 'completed') {
+			return this.state.todos.filter(todo => todo.done);
+		}
+		return this.state.todos;
+	}
+
   render() {
+
     return (
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">To Do List</h1>
+			<h1>TODO LIST</h1>
         </header>
-		<div className="todo-wrapper">
-			<Header />
+		<Grid className="todo-wrapper">
 			<TodoInput todoText="" addTodoUn={this.addTodoUn} addTodo={this.addTodo} addTodoCenter={this.addTodoCenter} />
-			<Filtersection />
-			<ul>
-				{
-					this.state.todos.map((todo) => {
-						return <TodoItem todo={todo} updateData={this.updateData} id={todo.id} key={todo.id} removeTodo={this.removeTodo} handleClick={this.handleClick}/>
-					})
-				}
-			</ul>
-		</div>
+			<ListGroup>
+				<Row>
+                    <Col sm={12} md={8} mdOffset={2} className="list_items">
+                        {
+                            this.todosFiltered().map((todo) => {
+                                return <TodoItem todo={todo} updateData={this.updateData} id={todo.id} key={todo.id} removeTodo={this.removeTodo} handleClick={this.handleClick}/>
+                            })
+                        }
+                    </Col>
+				</Row>
+			</ListGroup>
+            <ToggleButtonGroup className="filter_items" type="radio" name="options" defaultValue={1}>
+                <ToggleButton value={1} bsSize="xsmall" className={({'active': this.state.filter === 'all'})} onClick={() => this.updateFilter('all')}>Все: { this.state.todos.length }</ToggleButton>
+                <ToggleButton value={2} bsSize="xsmall" className={({'active': this.state.filter === 'active'})} onClick={() => this.updateFilter('active')}>Активные: { this.state.todos.filter((todo) => {return !todo.done}).length}</ToggleButton>
+                <ToggleButton value={3} bsSize="xsmall" className={({'active': this.state.filter === 'completed'})} onClick={() => this.updateFilter('completed')}>Выполненные: { this.state.todos.filter((todo) => {return todo.done}).length}</ToggleButton>
+            </ToggleButtonGroup>
+		</Grid>
       </div>
     );
   }

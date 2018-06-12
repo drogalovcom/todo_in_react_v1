@@ -1,4 +1,8 @@
 import React from 'react';
+import ListGroupItem from 'react-bootstrap/lib/ListGroupItem';
+import FormControl from 'react-bootstrap/lib/FormControl';
+import Col from 'react-bootstrap/lib/Col';
+import Row from 'react-bootstrap/lib/Row';
 
 
 export default class TodoItem extends React.Component {
@@ -33,7 +37,7 @@ export default class TodoItem extends React.Component {
 		RenderInput = () => {
 			if (this.state.editing) {
 				return (
-					<input type="text"
+					<FormControl type="text"
 						onChange={this.handleEditingChange.bind(this)}
 						onKeyDown={this.handleEditingDone.bind(this)}
 						value={this.props.todo.text}/>
@@ -41,10 +45,21 @@ export default class TodoItem extends React.Component {
 			} else {
 				return (
 					<div onDoubleClick={this.handleEditing.bind(this)}>
-						<span style={{ textDecoration: this.props.todo.done ? 'line-through' :
-					'none' }}>{this.props.todo.text}</span>
-						<button className="completeTodo" onClick={() => this.props.handleClick(this.props.id)}>{this.props.todo.done ? 'Продлить' : 'Выполнено'}</button>
-						<button className="removeTodo" onClick={(e) => this.removeTodo(this.props.id)}>Удалить</button>
+						<Row>
+							<Col xs={1}>
+								<span onClick={() => this.props.handleClick(this.props.id)}>
+									{this.props.todo.done ? <i className="material-icons">loop</i> : <i className="material-icons">check</i>}
+                            	</span>
+							</Col>
+                            <Col xs={10}>
+							<span className="title_item" style={{ textDecoration: this.props.todo.done ? 'line-through' : 'none' }}>{this.props.todo.text}</span>
+                            </Col>
+                            <Col xs={1} className="buttons_item">
+								<span onClick={(e) => this.removeTodo(this.props.id)}><i className="material-icons">
+                                    clear
+                                </i></span>
+                            </Col>
+						</Row>
 					</div>
 				)
 			}
@@ -52,9 +67,9 @@ export default class TodoItem extends React.Component {
 
 		render() {
 			return (
-				<div className="todoWrapper">
+				<ListGroupItem className="todoWrapper">
 					<this.RenderInput/>
-				</div>
+				</ListGroupItem>
 			)
 		}
 }
