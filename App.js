@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import { Provider } from 'react-redux';
+import store from './store';
+import { connect } from 'react-redux';
+import { fetchTodos } from './actions/todoActions';
 import logo from './logo.svg';
 import './App.css';
 import TodoInput from './components/todoInput';
@@ -11,19 +15,6 @@ import ToggleButtonGroup from 'react-bootstrap/lib/ToggleButtonGroup';
 import ToggleButton from 'react-bootstrap/lib/ToggleButton';
 
 class App extends Component {
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			filter: 'all',
-			todos: [
-				{id: 0, text: "Это моя первая задача!", done: false },
-				{id: 1, text: "Это моя вторая задача!", done: true },
-				{id: 2, text: "Это моя третья задача!", done: false}
-			],
-			nextId: 3
-		};
-	}
 
     addTodoUn = (todoText) => {
         let todos = this.state.todos.slice();
@@ -67,7 +58,6 @@ class App extends Component {
         return [...result, todo];
 		}, []);
 		this.setState({todos: newTodo});
-
 	}
 
     handleClick = (id) => {
@@ -97,33 +87,33 @@ class App extends Component {
 	}
 
   render() {
-
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-			<h1>TODO LIST</h1>
-        </header>
-		<Grid className="todo-wrapper">
-			<TodoInput todoText="" addTodoUn={this.addTodoUn} addTodo={this.addTodo} addTodoCenter={this.addTodoCenter} />
-			<ListGroup>
-				<Row>
-                    <Col sm={12} md={8} mdOffset={2} className="list_items">
-                        {
-                            this.todosFiltered().map((todo) => {
-                                return <TodoItem todo={todo} updateData={this.updateData} id={todo.id} key={todo.id} removeTodo={this.removeTodo} handleClick={this.handleClick}/>
-                            })
-                        }
-                    </Col>
-				</Row>
-			</ListGroup>
-            <ToggleButtonGroup className="filter_items" type="radio" name="options" defaultValue={1}>
-                <ToggleButton value={1} bsSize="xsmall" className={({'active': this.state.filter === 'all'})} onClick={() => this.updateFilter('all')}>Все: { this.state.todos.length }</ToggleButton>
-                <ToggleButton value={2} bsSize="xsmall" className={({'active': this.state.filter === 'active'})} onClick={() => this.updateFilter('active')}>Активные: { this.state.todos.filter((todo) => {return !todo.done}).length}</ToggleButton>
-                <ToggleButton value={3} bsSize="xsmall" className={({'active': this.state.filter === 'completed'})} onClick={() => this.updateFilter('completed')}>Выполненные: { this.state.todos.filter((todo) => {return todo.done}).length}</ToggleButton>
-            </ToggleButtonGroup>
-		</Grid>
-      </div>
+		<Provider store={store}>
+            <div className="App">
+                <header className="App-header">
+                    <img src={logo} className="App-logo" alt="logo" /><h1>TODO LIST</h1>
+                </header>
+                <Grid className="todo-wrapper">
+                    <TodoInput todoText="" addTodoUn={this.addTodoUn} addTodo={this.addTodo} addTodoCenter={this.addTodoCenter} />
+                    <ListGroup>
+                        <Row>
+                            <Col xs={12} md={8} mdOffset={2} className="list_items">
+                                {
+                                    this.todosFiltered().map((todo) => {
+                                        return <TodoItem todo={todo} updateData={this.updateData} id={todo.id} key={todo.id} removeTodo={this.removeTodo} handleClick={this.handleClick}/>
+                                    })
+                                }
+                            </Col>
+                        </Row>
+                    </ListGroup>
+                    <ToggleButtonGroup className="filter_items" type="radio" name="options" defaultValue={1}>
+                        <ToggleButton value={1} bsSize="xsmall" className={({'active': this.state.filter === 'all'})} onClick={() => this.updateFilter('all')}>Всего: { this.state.todos.length }</ToggleButton>
+                        <ToggleButton value={2} bsSize="xsmall" className={({'active': this.state.filter === 'active'})} onClick={() => this.updateFilter('active')}>Осталось: { this.state.todos.filter((todo) => {return !todo.done}).length}</ToggleButton>
+                        <ToggleButton value={3} bsSize="xsmall" className={({'active': this.state.filter === 'completed'})} onClick={() => this.updateFilter('completed')}>Выполнено: { this.state.todos.filter((todo) => {return todo.done}).length}</ToggleButton>
+                    </ToggleButtonGroup>
+                </Grid>
+            </div>
+		</Provider>
     );
   }
 }

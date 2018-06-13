@@ -47,19 +47,15 @@ export default class TodoInput extends React.Component {
                 <Row>
                     <Col xs={12} sm={8} smOffset={2}>
                         <InputGroup className="input_section">
-                            <Col xs={8}>
-                                <FormControl bsSize="small" type="text" placeholder="Введите задачу"
-                                             value={this.state.value}
-                                             onChange={this.handleChange}
-                                />
-                            </Col>
-                            <Col xs={4}>
-                                <DropdownButton bsSize="small" title="Добавить" id="bg-nested-dropdown">
-                                    <MenuItem bsSize="small" onClick={() => this.addTodoUn(this.state.value)}>В начало</MenuItem>
-                                    <MenuItem bsSize="small" onClick={() => this.addTodoCenter(this.state.value)}>В середину</MenuItem>
-                                    <MenuItem bsSize="small" onClick={() => this.addTodo(this.state.value)}>В конец</MenuItem>
-                                </DropdownButton>
-                            </Col>
+                            <FormControl bsSize="small" type="text" placeholder="Введите задачу"
+                                         value={this.state.value}
+                                         onChange={this.handleChange}
+                            />
+                            <DropdownButton bsSize="small" title="Добавить" id="bg-nested-dropdown">
+                                <MenuItem bsSize="small" onClick={() => this.addTodoUn(this.state.value)}>В начало</MenuItem>
+                                <MenuItem bsSize="small" onClick={() => this.addTodoCenter(this.state.value)}>В середину</MenuItem>
+                                <MenuItem bsSize="small" onClick={() => this.addTodo(this.state.value)}>В конец</MenuItem>
+                            </DropdownButton>
                         </InputGroup>
                     </Col>
                 </Row>
